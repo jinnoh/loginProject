@@ -43,6 +43,7 @@ const DashboardHTML = `<!DOCTYPE html>
     <p>User Identity Status: <strong>Authenticated as %s</strong></p>
     <p>This data is protected behind server-side session tokens.</p>
     <a href="/logout">Logout</a>
+	<img src="./images.jpg">
 </body>
 </html>`
 
