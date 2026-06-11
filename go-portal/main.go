@@ -102,6 +102,7 @@ func main() {
 					Name:     "session_token",
 					Value:    token,
 					HttpOnly: true,
+					Secure: true,
 					SameSite: http.SameSiteStrictMode,
 					Path:     "/",
 				})
@@ -150,6 +151,9 @@ func main() {
 		http.SetCookie(w, &http.Cookie{
 			Name:   "session_token",
 			Value:  "",
+			HttpOnly: true,
+			Secure: true,
+			SameSite: http.SameSiteStrictMode,
 			MaxAge: -1,
 			Path:   "/",
 		})
