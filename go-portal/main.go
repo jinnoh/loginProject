@@ -3,10 +3,8 @@ package main
 //no third party dependencies for now just native go libraries
 import(
 	"fmt"
-	"log"
 	"net/http"
 	"os"
-	"strings"
 	"encoding/base64"
 	"crypto/rand"
 )
