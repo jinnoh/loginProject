@@ -1,11 +1,17 @@
+#github actions workflow config for security scans using govulncheck and gosec
+#every time a branch is merged or code is pushed github will run security scans on the code
+
 name: Security Automation Pipeline
 
+#on push to main or jinDevBranch or on pr to main branch, the workflow will triger
 on:
   push:
-    branches: [ main, development ]
+    branches: [ main, jinDevBranch ]
   pull_request:
     branches: [ main ]
 
+#run jobs on ubunutu latest vm
+#checkout@v4 clones repo files onto ubuntu vm then with-go@v5 sets up go environemnet to run security scan
 jobs:
   static-analysis:
     name: SAST & Dependency Audit
@@ -17,15 +23,18 @@ jobs:
       - name: Setup Go Runtime Environment
         uses: actions/with-go@v5
         with:
-          go-version: '1.22'
+          go-version: '1.24'
 
       #dependency scaner
+      #installs govulncheck which is go's official vulnerbaility scanner to check for dependencies with known cves
       - name: Run Govulncheck Dependency Scanner
         run: |
           go install golang.org/x/vuln/cmd/govulncheck@latest
           govulncheck ./...
 
       #sast scanner
+      #installs gosec whcih is popular open source sast tool for go code
+      #looks to pattern match for common security issues like hardcoded secrets, posture degradation, etc
       - name: Run Gosec Security Audit
         run: |
           go install github.com/securego/gosec/v2/cmd/gosec@latest
