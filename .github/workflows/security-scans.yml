@@ -1,0 +1,32 @@
+name: Security Automation Pipeline
+
+on:
+  push:
+    branches: [ main, development ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  static-analysis:
+    name: SAST & Dependency Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go Runtime Environment
+        uses: actions/with-go@v5
+        with:
+          go-version: '1.22'
+
+      #dependency scaner
+      - name: Run Govulncheck Dependency Scanner
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          govulncheck ./...
+
+      #sast scanner
+      - name: Run Gosec Security Audit
+        run: |
+          go install github.com/securego/gosec/v2/cmd/gosec@latest
+          gosec ./...
