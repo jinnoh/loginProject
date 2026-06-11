@@ -23,7 +23,7 @@ jobs:
       - name: Setup Go Runtime Environment
         uses: actions/setup-go@v5
         with:
-          go-version: '1.24'
+          go-version: '1.25'
 
       #dependency scaner
       #installs govulncheck which is go's official vulnerbaility scanner to check for dependencies with known cves
