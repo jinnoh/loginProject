@@ -76,9 +76,9 @@ func main() {
 			username := strings.TrimSpace(r.FormValue("username"))
 			password := r.FormValue("password")
 
-			if username == targetUser && password == targetPass {
+			if username == targetUser && password == targetPw {
 				token := generateSessionToken()
-				activeSessions[token] = username
+				activeSession[token] = username
 
 				//samesite cokoie with http only flag to defend against xss and csrf
 				http.SetCookie(w, &http.Cookie{
@@ -105,7 +105,7 @@ func main() {
 			return
 		}
 
-		username, found := activeSessions[cookie.Value]
+		username, found := activeSession[cookie.Value]
 		if !found {
 			http.Redirect(w, r, "/unauthorized", http.StatusSeeOther)
 			return
@@ -122,7 +122,7 @@ func main() {
 	http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie("session_token")
 		if err == nil {
-			delete(activeSessions, cookie.Value)
+			delete(activeSession, cookie.Value)
 		}
 		http.SetCookie(w, &http.Cookie{
 			Name:   "session_token",
